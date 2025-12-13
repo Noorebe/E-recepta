@@ -30,7 +30,7 @@ public class mainLekPanel {
     private Label PESELPacjenta = new Label("0123456789");
     private Label adresLabel = new Label("Adres:");
     private Label adresPacjenta = new Label("ul. Kwaitowa 5, Warszawa");
-    private Label typReceptyLabel = new Label("Typ recepty");
+    private Label typReceptyLabel = new Label("Leki do recepty");
     private Button wczytajBtn = new Button("Dodaj");
     private Button skalujBtn = new Button("Skaluj!");
     private Button dodajLekBtn = new Button("Dodaj Lek");
