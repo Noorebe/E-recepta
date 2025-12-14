@@ -48,7 +48,9 @@ public class mainLekPanel {
 
     //Zmienne prawej kolumny
     private Label alergieTitle = new Label("ALERGIE PACJENTA:");
-    private Label alergia = new Label("Uczulenie na penicylinę!");
+    private Label alergia1 = new Label("Uczulenie na penicylinę!");
+    private Label alergia2 = new Label("Uczulenie na orzechy!");
+    private Label alergia3 = new Label("Uczulenie na metylomeksatoline!");
     private Label historiaTitle = new Label("Historia Recept Pacjenta:");
     private Button zobaczWszystko = new Button("Zobacz Wszystko");
 
@@ -207,16 +209,61 @@ public class mainLekPanel {
         /*
            PRAWA KOLUMNA - INFORMACJE
         */
+        Label removeIcon1 = new Label("✕");
+        removeIcon1.getStyleClass().add("allergy-remove");
+
+        Label removeIcon2 = new Label("✕");
+        removeIcon2.getStyleClass().add("allergy-remove");
+
+        Label removeIcon3 = new Label("✕");
+        removeIcon3.getStyleClass().add("allergy-remove");
+
+        Label alertIcon = new Label("⚠");
+        alertIcon.getStyleClass().add("allergy-alert-icon");
+
+        Label allergyTitle = new Label("Alergie");
+        allergyTitle.getStyleClass().add("allergy-title");
+
+        HBox titleBoxP = new HBox(10);
+        titleBoxP.setAlignment(Pos.CENTER);
+        titleBoxP.getChildren().addAll(alertIcon, allergyTitle);
+
+        HBox allergyChip1 = new HBox(10);
+        allergyChip1.getChildren().addAll(alergia1, removeIcon1);
+        allergyChip1.getStyleClass().add("allergy-chip1");
+        allergyChip1.setAlignment(Pos.CENTER);
+
+        HBox allergyChip2 = new HBox(10);
+        allergyChip2.getChildren().addAll(alergia2, removeIcon2);
+        allergyChip2.getStyleClass().add("allergy-chip2");
+        allergyChip2.setAlignment(Pos.CENTER);
+
+        HBox allergyChip3 = new HBox(10);
+        allergyChip3.getChildren().addAll(alergia3, removeIcon3);
+        allergyChip3.getStyleClass().add("allergy-chip3");
+        allergyChip3.setAlignment(Pos.CENTER);
+
+        VBox allergyList = new VBox(12);
+        allergyList.getChildren().addAll(
+                allergyChip1,
+                allergyChip2,
+                allergyChip3
+        );
+        allergyList.getStyleClass().add("allergy-container");
+
+        alergia1.getStyleClass().add("allergy-text1");
+        alergia2.getStyleClass().add("allergy-text2");
+        alergia3.getStyleClass().add("allergy-text3");
+
         VBox rightPanel = new VBox(20);
         rightPanel.getChildren().addAll(
-                alergieTitle,
-                alergia, new Separator(),
+                titleBoxP,
+                allergyList, new Separator(),
                 historiaTitle,
                 zobaczWszystko
         );
         rightPanel.getStyleClass().add("right-panel");
         alergieTitle.getStyleClass().add("subtitle");
-        alergia.getStyleClass().add("alert-box");
 
 
         /*

@@ -118,12 +118,57 @@
 
 /* PANEL PRAWY */
 .right-panel {
-    -fx-background-color: #ECF0F1;
+    -fx-background-color: #64748B;
     -fx-padding: 20;
     -fx-pref-width: 300;
 }
 
-.right-panel .alert-box {
-    -fx-text-fill: red;
+.allergy-alert-icon {
+    -fx-text-fill: #FF4D4D;
+    -fx-font-size: 50px;
+}
+
+.allergy-title {
+    -fx-text-fill: #FF4D4D;
+    -fx-font-size: 22px;
     -fx-font-weight: bold;
 }
+
+.allergy-container {
+    -fx-background-color: #34495E;
+    -fx-padding: 16;
+    -fx-background-radius: 16;
+    -fx-border-radius: 16;
+    -fx-border-color: rgba(255,255,255,0.15);
+}
+
+.allergy-chip1, .allergy-chip2, .allergy-chip3 {
+    -fx-background-color: linear-gradient(
+            to bottom,
+            #2A1F1F,
+            #1C1515
+    );
+    -fx-padding: 10 16 10 16;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: rgba(255,255,255,0.2);
+    -fx-alignment: center-left;
+}
+
+.allergy-text1, .allergy-text2, .allergy-text3 {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+}
+
+.allergy-remove {
+    -fx-text-fill: #FF4D4D;
+    -fx-font-size: 16px;
+    -fx-cursor: hand;
+}
+
+.allergy-remove:hover {
+    -fx-text-fill: #FF8080;
+}
+
+
+
