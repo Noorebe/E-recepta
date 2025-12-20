@@ -23,7 +23,6 @@ public class mainPacPanel {
     private Label notificationLabel2 = new Label("Otrzymano nową ereceptę!");
 
     //Guziki z panelem z guziczkami
-    private Label szybkiDostepLabel = new Label("Szybki dostęp");
     private Button wizyta = new Button("Umów wizytę");
     private Button historia = new Button("Historia wizyt");
     private Button nadchodzaceWizyty = new Button("Nadchodzace wizyty");
@@ -43,9 +42,20 @@ public class mainPacPanel {
         VBox root = new VBox(1);
         root.getStyleClass().add("main-panel");
 
+        Label[] warningLabel = new Label[]{
+                warningTestLabel1,
+                warningTestLabel2
+        };
+
+        Label[] notificationLabel = new Label[]{
+                notificationLabel1,
+                notificationLabel2
+        };
+
         /*
         Panel górny który zawiera ikonki, powiadomienia oraz nazwę profilu użytkownika
          */
+        Region spacer = new Region();
         Label imieNazwisko = new Label(imie + " " + nazwisko);
         Image profileImage = new Image(
                 getClass().getResourceAsStream("/icons/profile.png")
@@ -57,20 +67,49 @@ public class mainPacPanel {
         profileIcon.setPreserveRatio(true);
 
         HBox nameBox = new HBox(20);
-        nameBox.setAlignment(Pos.CENTER_LEFT);
-        nameBox.getStyleClass().add("nameBox");
-        nameBox.getChildren().addAll(
-                profileIcon,
-                imieNazwisko
-        );
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        if (notificationLabel.length > 0) {
+            Image notificationImage = new Image(
+                    getClass().getResourceAsStream("/icons/notification-bell-active.png")
+            );
+
+            ImageView notificationIcon = new ImageView(notificationImage);
+            notificationIcon.setFitWidth(50);
+            notificationIcon.setFitHeight(50);
+            notificationIcon.setPreserveRatio(true);
+
+            nameBox.setAlignment(Pos.CENTER_LEFT);
+            nameBox.getStyleClass().add("nameBox");
+            nameBox.getChildren().addAll(
+                    profileIcon,
+                    imieNazwisko,
+                    spacer,
+                    notificationIcon
+            );
+        } else {
+            Image notificationImage = new Image(
+                    getClass().getResourceAsStream("/icons/notification-bell.png")
+            );
+
+            ImageView notificationIcon = new ImageView(notificationImage);
+            notificationIcon.setFitWidth(50);
+            notificationIcon.setFitHeight(50);
+            notificationIcon.setPreserveRatio(true);
+
+            nameBox.setAlignment(Pos.CENTER_LEFT);
+            nameBox.getStyleClass().add("nameBox");
+            nameBox.getChildren().addAll(
+                    profileIcon,
+                    imieNazwisko,
+                    spacer,
+                    notificationIcon
+            );
+        }
 
         /*
         Kolejny panel górny który zawiera powiadomienia oraz przycisk do wypisywania e-recepty
          */
-        Label[] warningLabel = new Label[]{
-                warningTestLabel1,
-                warningTestLabel2
-        };
         VBox warningsBox = new VBox(10);
         for (int i = 0; i < warningLabel.length; i++) {
             HBox warningBox = new HBox(10);
@@ -89,10 +128,7 @@ public class mainPacPanel {
         }
 
         //Dodanie ładnego przycisksu nowej recepty
-        Label[] notificationLabel = new Label[]{
-                notificationLabel1,
-                notificationLabel2
-        };
+
         VBox nowaReceptaBox = new VBox(10);
         for (int i = 0; i < warningLabel.length; i++) {
             HBox nowaReceptaView = new HBox(10);
@@ -208,6 +244,7 @@ public class mainPacPanel {
         GridPane.setHgrow(historia, Priority.ALWAYS);
         GridPane.setHgrow(dawkowanie, Priority.ALWAYS);
 
+        mainButtonBox.setAlignment(Pos.TOP_CENTER);
         mainButtonBox.getChildren().add(
                 mainButtonPanel
         );
