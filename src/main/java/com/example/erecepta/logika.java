@@ -14,11 +14,16 @@ public class logika extends Application {
         launch(args);
     }
 
-    logFX logFX1 = new logFX();
-    Button submit = logFX1.getSubmitButton();
-    Button clear = logFX1.getClearButton();
-    TextField loginField = logFX1.getLoginTextField();
-    TextField passwordField = logFX1.getPasswordField();
+    private logFX logFX1 = new logFX();
+    private Button submit = logFX1.getSubmitButton();
+    private Button clear = logFX1.getClearButton();
+    private TextField loginField = logFX1.getLoginTextField();
+    private TextField passwordField = logFX1.getPasswordField();
+    private String getImie = "getImie";
+    private String getNazwisko = "getNazwisko";
+    private String imie;
+    private String nazwisko;
+    private String nazwaPacjenta;
 
     @Override
     public void start(Stage primaryStage) {
@@ -51,17 +56,16 @@ public class logika extends Application {
                 int mode = logFX1.getChosenMode();
 
                 ServerConnection serverConnection = new ServerConnection(login, password);
-                String nazwaPacjenta = null;
-                String imie;
-                String nazwisko;
-                String data = "getImie";
+
                 try {
-                    nazwaPacjenta = serverConnection.getPacjent(data);
-                    imie = serverConnection.getImie();
-                    nazwisko = serverConnection.getNazwisko();
+                    imie = serverConnection.getPacjent(getImie);
+                    nazwisko = serverConnection.getPacjent(getNazwisko);
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
+
+                nazwaPacjenta = imie + nazwisko;
+
 
                 switch (mode) {
                     case 1:
