@@ -2,8 +2,11 @@ package com.example.erecepta;
 import javafx.application.Application;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class logika extends Application {
 
@@ -47,19 +50,35 @@ public class logika extends Application {
                 String password = logFX1.getPassword();
                 int mode = logFX1.getChosenMode();
 
-                logowanie log1 = new logowanie(login, password);
-
-                String imie = log1.getImie(login);
-                String nazwisko = log1.getNazwisko(login);
+                ServerConnection serverConnection = new ServerConnection(login, password);
+                String nazwaPacjenta = null;
+                String imie;
+                String nazwisko;
+                String data = "getImie";
+                try {
+                    nazwaPacjenta = serverConnection.getPacjent(data);
+                    imie = serverConnection.getImie();
+                    nazwisko = serverConnection.getNazwisko();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
 
                 switch (mode) {
                     case 1:
-                        mainPacPanel mainPanelPac = new mainPacPanel(imie, nazwisko, login, password);
-                        mainPanelPac.start(primaryStage);
+                        try {
+                            mainPacPanel mainPanelPac = new mainPacPanel(imie, nazwisko, nazwaPacjenta);
+                            mainPanelPac.start(primaryStage);
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
                         break;
                     case 2:
-                        mainPacPanel mainPanelAdm = new mainPacPanel(imie, nazwisko, login, password);
-                        mainPanelAdm.start(primaryStage);
+                        mainPacPanel mainPanelAdm = new mainPacPanel(imie, nazwisko, nazwaPacjenta);
+                        try {
+                            mainPanelAdm.start(primaryStage);
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
                         break;
                     case 3:
                         mainLekPanel mainPanelLek = new mainLekPanel(imie, nazwisko, login, password);

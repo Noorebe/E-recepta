@@ -10,12 +10,15 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 public class mainPacPanel {
 
     String nazwisko;
     String imie;
     String login;
     String password;
+    String nazwa;
 
     private Label warningTestLabel1 = new Label("Recepta 1 kończy się za 2 dni!");
     private Label warningTestLabel2 = new Label("Recepta 2 kończy się za 4 dni!");
@@ -30,14 +33,13 @@ public class mainPacPanel {
 
     private final Button wyloguj = new Button("Wyloguj");
 
-    mainPacPanel(String login, String password, String imie, String nazwisko) {
+    mainPacPanel(String login, String password, String nazwa) {
         this.login = login;
         this.password = password;
-        this.imie = imie;
-        this.nazwisko = nazwisko;
+        this.nazwa = nazwa;
     }
 
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws IOException {
 
         VBox root = new VBox(1);
         root.getStyleClass().add("main-panel");
@@ -56,7 +58,6 @@ public class mainPacPanel {
         Panel górny który zawiera ikonki, powiadomienia oraz nazwę profilu użytkownika
          */
         Region spacer = new Region();
-        Label imieNazwisko = new Label(imie + " " + nazwisko);
         Image profileImage = new Image(
                 getClass().getResourceAsStream("/icons/profile.png")
         );
@@ -79,6 +80,8 @@ public class mainPacPanel {
             notificationIcon.setFitHeight(50);
             notificationIcon.setPreserveRatio(true);
 
+            Label imieNazwisko = new Label(nazwa);
+
             nameBox.setAlignment(Pos.CENTER_LEFT);
             nameBox.getStyleClass().add("nameBox");
             nameBox.getChildren().addAll(
@@ -96,6 +99,8 @@ public class mainPacPanel {
             notificationIcon.setFitWidth(50);
             notificationIcon.setFitHeight(50);
             notificationIcon.setPreserveRatio(true);
+
+            Label imieNazwisko = new Label(nazwa);
 
             nameBox.setAlignment(Pos.CENTER_LEFT);
             nameBox.getStyleClass().add("nameBox");
