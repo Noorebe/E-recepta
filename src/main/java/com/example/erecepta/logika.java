@@ -57,19 +57,12 @@ public class logika extends Application {
 
                 ServerConnection serverConnection = new ServerConnection(login, password);
 
-                try {
-                    imie = serverConnection.getPacjent(getImie);
-                    nazwisko = serverConnection.getPacjent(getNazwisko);
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
-
-                nazwaPacjenta = imie + nazwisko;
-
-
                 switch (mode) {
                     case 1:
                         try {
+                            imie = serverConnection.getPacjent(getImie);
+                            nazwisko = serverConnection.getPacjent(getNazwisko);
+                            nazwaPacjenta = imie + nazwisko;
                             mainPacPanel mainPanelPac = new mainPacPanel(imie, nazwisko, nazwaPacjenta);
                             mainPanelPac.start(primaryStage);
                         } catch (IOException ex) {
@@ -77,16 +70,15 @@ public class logika extends Application {
                         }
                         break;
                     case 2:
-                        mainPacPanel mainPanelAdm = new mainPacPanel(imie, nazwisko, nazwaPacjenta);
                         try {
-                            mainPanelAdm.start(primaryStage);
+                            imie = serverConnection.getPacjent(getImie);
+                            nazwisko = serverConnection.getPacjent(getNazwisko);
+                            nazwaPacjenta = imie + nazwisko;
+                            mainLekPanel mainPanelLek = new mainLekPanel(imie, nazwisko, login, password);
+                            mainPanelLek.start(primaryStage);
                         } catch (IOException ex) {
                             throw new RuntimeException(ex);
                         }
-                        break;
-                    case 3:
-                        mainLekPanel mainPanelLek = new mainLekPanel(imie, nazwisko, login, password);
-                        mainPanelLek.start(primaryStage);
                         break;
                     default:
                         Alert alert = new Alert(Alert.AlertType.WARNING);
