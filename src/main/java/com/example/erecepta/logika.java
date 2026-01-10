@@ -2,10 +2,12 @@ package com.example.erecepta;
 import javafx.application.Application;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class logika extends Application {
 
@@ -50,23 +52,23 @@ public class logika extends Application {
                 alert.setContentText("Hasło nie może być puste!");
                 alert.showAndWait();
             } else {
-                String PESEL = logFX1.getLogin();
+                String login = logFX1.getLogin();
                 String password = logFX1.getPassword();
                 int mode = logFX1.getChosenMode();
 
-                ServerConnection serverConnection = new ServerConnection(PESEL, password);
+                ServerConnection serverConnection = new ServerConnection(login, password);
 
 
                 switch (mode) {
                     case 1:
                         try {
-                            String result = serverConnection.getPacjent("loginPacjent", PESEL);
+                            String result = serverConnection.getPacjent("loginPacjent");
                             if ("BRAK_DANYCH".equals(result)) {
                                 new Alert(Alert.AlertType.WARNING, "Błędny login lub hasło").showAndWait();
                                 return;
                             } else {
-                            imie = serverConnection.getPacjent(getImie, PESEL);
-                            nazwisko = serverConnection.getPacjent(getNazwisko, PESEL);
+                            imie = serverConnection.getPacjent(getImie);
+                            nazwisko = serverConnection.getPacjent(getNazwisko);
                             nazwaPacjenta = imie + " " + nazwisko;
                             mainPacPanel mainPanelPac = new mainPacPanel(imie, nazwisko, nazwaPacjenta);
                             mainPanelPac.start(primaryStage);
@@ -77,14 +79,22 @@ public class logika extends Application {
                         break;
                     case 2:
                         try {
-                            imie = serverConnection.getPacjent(getImie, PESEL);
-                            nazwisko = serverConnection.getPacjent(getNazwisko, PESEL);
+                            imie = serverConnection.getPacjent(getImie);
+                            nazwisko = serverConnection.getPacjent(getNazwisko);
                             nazwaPacjenta = imie + nazwisko;
-                            mainLekPanel mainPanelLek = new mainLekPanel(imie, nazwisko, PESEL, password);
+                            mainLekPanel mainPanelLek = new mainLekPanel(imie, nazwisko, login, password);
                             mainPanelLek.start(primaryStage);
                         } catch (IOException ex) {
                             throw new RuntimeException(ex);
                         }
+                        break;
+                    case 3:
+                        stworzKontoPac stworzKontoPac = new stworzKontoPac();
+                        stworzKontoPac.start(primaryStage);
+                        break;
+                    case 4:
+                        stworzKontoLek stworzKontoLek = new stworzKontoLek();
+                        stworzKontoLek.start(primaryStage);
                         break;
                     default:
                         Alert alert = new Alert(Alert.AlertType.WARNING);
