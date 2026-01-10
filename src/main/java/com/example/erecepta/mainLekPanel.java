@@ -10,6 +10,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 public class mainLekPanel {
 
     String nazwisko;
@@ -42,7 +44,7 @@ public class mainLekPanel {
     private Label emailLabel = new Label("Adres e-mail:");
     private Label email = new Label("piotr.bujak@student.pk.edu.pl");
     private Label typReceptyLabel = new Label("Leki do recepty");
-    private Button wczytajBtn = new Button("Dodaj");
+    private Button wczytajBtn = new Button("Wczytaj");
     private Button wypiszBtn = new Button("Wypisz Receptę");
     private Button dodajLekBtn = new Button("Dodaj Lek");
     private TextField searchField = new TextField();
@@ -301,9 +303,23 @@ public class mainLekPanel {
         primaryStage.setScene(scene);
         primaryStage.show();
 
+        ServerConnection serverConnection = new ServerConnection(login, password);
+
         wyloguj.setOnAction(e -> {
             logika mainPane = new logika();
             mainPane.start(primaryStage);
         });
+
+        wczytajBtn.setOnAction(e -> {
+            try {
+                String imie = serverConnection.getPacjent("getImie");
+                String nazwisko = serverConnection.getPacjent("getNazwisko");
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+            imieINazwiskoPacjenta = new Label(imie + " " + nazwisko);
+        });
     }
+
+    public Button getPokazPac() { return wczytajBtn; }
 }
