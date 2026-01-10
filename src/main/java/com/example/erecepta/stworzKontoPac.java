@@ -3,122 +3,132 @@ package com.example.erecepta;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import javax.swing.*;
-
-
 public class stworzKontoPac {
-    /*
-    * Dane osobowe
-    * */
-    private Label LabelDaneOsobowe = new Label("Dane osobowe");
-    private Label LabelImie = new Label("Imie");
-    private Label LabelNazwisko = new Label("Nazwisko");
-    private Label LabelPesel = new Label("Pesel ");
-    private Label LabelDataUrodzenia = new Label("Data urodzenia");
-    private Label LabelAdresZamieszkania = new Label("Adres Zamieszkania");
 
-    /*
-    * Kontakt
-    * */
-    private Label LabelKontakt = new Label("Kontakt");
-    private Label LabelNumerTelefonu = new Label("Numere telefonu");
-    private Label LabelAdresEmail = new Label("Adres e-mail");
+    // ===== Dane osobowe =====
+    private Label labelTitle = new Label("Tworzenie konta");
+    private Label labelDane = new Label("Dane osobowe");
 
-    public TextField TextImie = new TextField();
-    public TextField TextNazwisko = new TextField();
-    public TextField TextPesel = new TextField();
-    public TextField TextDataUrodzenia = new TextField();
-    public TextField TextAdresZamieszkania = new TextField();
+    private Label labelImie = new Label("Imię");
+    private Label labelNazwisko = new Label("Nazwisko");
+    private Label labelPesel = new Label("PESEL");
+    private Label labelData = new Label("Data urodzenia");
+    private Label labelAdres = new Label("Adres zamieszkania");
+
+    // ===== Kontakt =====
+    private Label labelKontakt = new Label("Kontakt");
+    private Label labelTelefon = new Label("Numer telefonu");
+    private Label labelEmail = new Label("Adres e-mail");
+
+    // ===== Pola =====
+    public TextField textImie = new TextField();
+    public TextField textNazwisko = new TextField();
+    public TextField textPesel = new TextField();
+    public DatePicker dateUrodzenia = new DatePicker();
+    public TextField textAdres = new TextField();
+
+    public TextField textTelefon = new TextField();
+    public TextField textEmail = new TextField();
 
     public void start(Stage primaryStage) {
-        VBox root = new VBox();
 
-        VBox DaneOsobowe = new VBox(600);
-        DaneOsobowe.setPadding(new Insets(16, 16, 8, 16));
-        DaneOsobowe.setAlignment(Pos.TOP_LEFT);
-        LabelDaneOsobowe.setFont(Font.font("Manrope", 35));
-        DaneOsobowe.getChildren().add(LabelDaneOsobowe);
+        // Placeholdery
+        textImie.setPromptText("Np. Jan");
+        textNazwisko.setPromptText("Np. Kowalski");
+        textPesel.setPromptText("11 cyfr");
+        textAdres.setPromptText("Ulica, numer domu, miasto, kod pocztowy");
+        textTelefon.setPromptText("000 000 000");
+        textEmail.setPromptText("pacjent@przyklad.pl");
 
-        VBox imie = new VBox();
-        imie.setAlignment(Pos.TOP_LEFT);
-        imie.getChildren().add(LabelImie);
+        // Nagłówki
+        labelTitle.setFont(Font.font("Manrope", 32));
+        labelDane.setFont(Font.font("Manrope", 26));
+        labelKontakt.setFont(Font.font("Manrope", 26));
 
-        GridPane gridImie = new GridPane();
-        TextImie.setMaxWidth(Double.MAX_VALUE);
-        gridImie.add(TextImie, 1, 0);
+        // ===== Grid dane osobowe =====
+        GridPane daneGrid = new GridPane();
+        daneGrid.setHgap(30);
+        daneGrid.setVgap(20);
 
-        VBox nazwisko = new VBox();
-        nazwisko.setAlignment(Pos.TOP_LEFT);
-        nazwisko.getChildren().add(LabelNazwisko);
+        daneGrid.add(labelImie, 0, 0);
+        daneGrid.add(textImie, 0, 1);
 
-        GridPane gridNazwisko = new GridPane();
-        TextNazwisko.setMaxWidth(Double.MAX_VALUE);
-        gridNazwisko.add(TextNazwisko, 1, 0);
+        daneGrid.add(labelNazwisko, 1, 0);
+        daneGrid.add(textNazwisko, 1, 1);
 
-        HBox peselDataUrodzenia = new HBox();
-        peselDataUrodzenia.setAlignment(Pos.TOP_LEFT);
-        peselDataUrodzenia.getChildren().addAll(LabelPesel, LabelDataUrodzenia);
+        daneGrid.add(labelPesel, 0, 2);
+        daneGrid.add(textPesel, 0, 3);
 
-        GridPane gridPesel = new GridPane();
-        TextPesel.setMaxWidth(Double.MAX_VALUE);
-        gridPesel.add(TextPesel, 1, 0);
-        GridPane gridDataUrodzenia = new GridPane();
-        TextDataUrodzenia.setMaxWidth(Double.MAX_VALUE);
-        gridDataUrodzenia.add(TextDataUrodzenia, 1, 0);
+        daneGrid.add(labelData, 1, 2);
+        daneGrid.add(dateUrodzenia, 1, 3);
 
-        VBox adresZamieszkania = new VBox();
-        adresZamieszkania.setAlignment(Pos.TOP_LEFT);
-        adresZamieszkania.getChildren().addAll(LabelAdresZamieszkania);
+        daneGrid.add(labelAdres, 0, 4, 2, 1);
+        daneGrid.add(textAdres, 0, 5, 2, 1);
 
-        VBox kontakt = new VBox();
-        kontakt.setAlignment(Pos.TOP_LEFT);
-        kontakt.getChildren().addAll(LabelKontakt);
+        // ===== Grid kontakt =====
+        GridPane kontaktGrid = new GridPane();
+        kontaktGrid.setHgap(30);
+        kontaktGrid.setVgap(20);
 
-        VBox numerTelefonu = new VBox();
-        numerTelefonu.setAlignment(Pos.TOP_LEFT);
-        numerTelefonu.getChildren().addAll(LabelNumerTelefonu);
+        kontaktGrid.add(labelTelefon, 0, 0);
+        kontaktGrid.add(textTelefon, 0, 1);
 
-        VBox adresEmail = new VBox();
-        adresEmail.setAlignment(Pos.TOP_LEFT);
-        adresEmail.getChildren().addAll(LabelAdresEmail);
+        kontaktGrid.add(labelEmail, 1, 0);
+        kontaktGrid.add(textEmail, 1, 1);
 
+        // ===== Root =====
+        VBox root = new VBox(30);
+        root.setPadding(new Insets(30));
+        root.setAlignment(Pos.TOP_LEFT);
 
         root.getChildren().addAll(
-                DaneOsobowe,
-                imie,
-                gridImie,
-                nazwisko,
-                gridNazwisko,
-                peselDataUrodzenia,
-                gridPesel,
-                gridDataUrodzenia,
-                adresZamieszkania,
-                kontakt,
-                numerTelefonu,
-                adresEmail);
-
-
-
-        Scene scene = new Scene(root, 1300, 780); //1300, 780
-        scene.getStylesheets().add(
-                getClass().getResource("/css/mainPanels/styleLek.css").toExternalForm()
+                labelTitle,
+                labelDane,
+                daneGrid,
+                labelKontakt,
+                kontaktGrid
         );
+
+        Scene scene = new Scene(root, 1300, 780); // jak w Twoim kodzie
+
+        // CSS jeśli masz
+        // scene.getStylesheets().add(getClass().getResource("/css/mainPanels/styleLek.css").toExternalForm());
 
         primaryStage.setTitle("E-Recepta");
         primaryStage.setScene(scene);
         primaryStage.show();
-    };
+    }
 
+    // gettery jak u Ciebie
     public String getImie() {
-        return TextImie.getText();
+        return textImie.getText();
+    }
+
+    public String getNazwisko() {
+        return textNazwisko.getText();
+    }
+
+    public String getPesel() {
+        return textPesel.getText();
+    }
+
+    public String getAdres() {
+        return textAdres.getText();
+    }
+
+    public String getTelefon() {
+        return textTelefon.getText();
+    }
+
+    public String getEmail() {
+        return textEmail.getText();
     }
 }
