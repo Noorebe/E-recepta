@@ -5,8 +5,10 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -34,7 +36,6 @@ public class stworzKontoPac {
     public TextField textPesel = new TextField();
     public DatePicker dateUrodzenia = new DatePicker();
     public TextField textAdres = new TextField();
-xxx
     public TextField textTelefon = new TextField();
     public TextField textEmail = new TextField();
 
@@ -55,6 +56,7 @@ xxx
 
         // ===== Grid dane osobowe =====
         GridPane daneGrid = new GridPane();
+        daneGrid.getStyleClass().add("daneGrid");
         daneGrid.setHgap(30);
         daneGrid.setVgap(20);
 
@@ -73,8 +75,17 @@ xxx
         daneGrid.add(labelAdres, 0, 4, 2, 1);
         daneGrid.add(textAdres, 0, 5, 2, 1);
 
+        GridPane.setHgrow(textImie, Priority.ALWAYS);
+        GridPane.setHgrow(textNazwisko, Priority.ALWAYS);
+        dateUrodzenia.setMaxWidth(Double.MAX_VALUE);
+        GridPane.setHgrow(dateUrodzenia, Priority.ALWAYS);
+
         // ===== Grid kontakt =====
+        VBox Vkontakt = new VBox();
+        Vkontakt.getStyleClass().add("Vkontakt");
+        Vkontakt.setAlignment(Pos.TOP_CENTER);
         GridPane kontaktGrid = new GridPane();
+        kontaktGrid.setAlignment(Pos.CENTER);
         kontaktGrid.setHgap(30);
         kontaktGrid.setVgap(20);
 
@@ -84,6 +95,14 @@ xxx
         kontaktGrid.add(labelEmail, 1, 0);
         kontaktGrid.add(textEmail, 1, 1);
 
+        GridPane.setHgrow(textTelefon, Priority.ALWAYS);
+        GridPane.setHgrow(textEmail, Priority.ALWAYS);
+
+        Vkontakt.getChildren().addAll(
+                labelKontakt,
+                kontaktGrid
+        );
+
         // ===== Root =====
         VBox root = new VBox(30);
         root.setPadding(new Insets(30));
@@ -92,15 +111,13 @@ xxx
         root.getChildren().addAll(
                 labelTitle,
                 labelDane,
-                daneGrid,
-                labelKontakt,
-                kontaktGrid
+                daneGrid, new Separator(),
+                Vkontakt
         );
 
         Scene scene = new Scene(root, 1300, 780); // jak w Twoim kodzie
 
-        // CSS jeśli masz
-        // scene.getStylesheets().add(getClass().getResource("/css/mainPanels/styleLek.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/css/tworzenieKont/noweKontoPac.css").toExternalForm());
 
         primaryStage.setTitle("E-Recepta");
         primaryStage.setScene(scene);
