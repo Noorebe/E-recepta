@@ -16,8 +16,8 @@ public class logFX{
     /*
     Tworzenie zmiennych
     */
-    private Label text1 = new Label("Login lub PESEL:");
-    private Label text2 = new Label("Hasło:");
+    private Label text1 = new Label("Nazwisko:");
+    private Label text2 = new Label("PESEL:");
     private Label welcome = new Label("Witaj ponownie!");
     private Label subtitle = new Label("Zaloguj się, aby uzyskać dostęp do e-recept");
     private Label title = new Label("E-recepta");
@@ -182,11 +182,28 @@ public class logFX{
         });
 
         stworzKontoPacjenta.setOnAction(e -> {
-            chosenMode = 3;
+            stworzKontoPac stworzKontoPac = new stworzKontoPac();
+            stworzKontoPac.start(primaryStage);
         });
 
         stwórzKontoLekarza.setOnAction(e -> {
-            chosenMode = 4;
+            stworzKontoLek stworzKontoLek = new stworzKontoLek(
+                    "Tworzenie konta",
+                    "Tworzenie konta",
+                    "Tworzenie konta",
+                    "Tworzenie konta",
+                    "Tworzenie konta",
+                    "Tworzenie konta",
+                    "Tworzenie konta",
+                    "Tworzenie konta",
+                    "Tworzenie konta"
+            );
+            stworzKontoLek.start(primaryStage);
+
+            stworzKontoLek.getWyjdzBtn().setOnAction(actionEvent -> {
+                primaryStage.setScene(scene);
+                primaryStage.show();
+            });
         });
     }
 

@@ -13,11 +13,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class stworzKontoLek {
+public class ustawieniaLek {
 
     private Label imie;
     private Label nazwisko;
-    private Label PZW;
     private Label PESEL;
     private String PESELString;
     private String nazwiskoString;
@@ -28,7 +27,6 @@ public class stworzKontoLek {
     private Label plec;
     private Label stareImieLabel = new Label("Stare Imie:");
     private Label stareNazwiskoLabel = new Label("Stare Nazwisko:");
-    private Label starePZW = new Label("Stare PZW:");
     private Label staryPeselLabel = new Label("Stary Pesel:");
     private Label staryAdresLabel = new Label("Stary Adres:");
     private Label staryTelefonLabel = new Label("Stary Telefon:");
@@ -38,7 +36,6 @@ public class stworzKontoLek {
 
     private Label noweImieLabel = new Label("nowe Imie:");
     private Label noweNazwiskoLabel = new Label("nowe Nazwisko:");
-    private Label NrPZW = new Label("NrPZW:");
     private Label nowyPeselLabel = new Label("nowy Pesel:");
     private Label nowyAdresLabel = new Label("nowy Adres:");
     private Label nowyTelefonLabel = new Label("nowy Telefon:");
@@ -48,7 +45,6 @@ public class stworzKontoLek {
 
     private TextField imieField = new TextField();
     private TextField nazwiskoField = new TextField();
-    private TextField PZWField = new TextField();
     private TextField peselField = new TextField();
     private TextField adresField = new TextField();
     private TextField telefonField = new TextField();
@@ -58,7 +54,6 @@ public class stworzKontoLek {
 
     private String noweImie;
     private String noweNazwisko;
-    private String nowyPZW;
     private String nowyPesel;
     private String nowyAdres;
     private String nowyTelefon;
@@ -69,12 +64,11 @@ public class stworzKontoLek {
     private Button wyjdz = new Button("Wyjdz");
     private Button akceptuj = new Button("Akceptuj");
 
-    private Label title = new Label("STWÓRZ KONTO LEKARZA");
+    private Label title = new Label("Ustawienia");
 
-    stworzKontoLek(String imie, String nazwisko, String PZW, String PESEL, String adres, String telefon, String email, String wiek, String plec) {
+    ustawieniaLek(String imie, String nazwisko, String PESEL, String adres, String telefon, String email, String wiek, String plec) {
         this.imie = new Label(imie);
         this.nazwisko = new Label(nazwisko);
-        this.PZW = new Label(PZW);
         this.PESEL = new Label(PESEL);
         this.PESELString = PESEL;
         this.nazwiskoString = nazwisko;
@@ -101,6 +95,12 @@ public class stworzKontoLek {
         gridPane.setHgap(15);
         gridPane.setVgap(15);
 
+        ColumnConstraints col1 = new ColumnConstraints();
+        col1.setHalignment(HPos.RIGHT);
+        col1.setPercentWidth(15);
+        ColumnConstraints col2 = new ColumnConstraints();
+        col2.setHalignment(HPos.LEFT);
+        col2.setPercentWidth(20);
         ColumnConstraints col3 = new ColumnConstraints();
         col3.setHalignment(HPos.RIGHT);
         col3.setPercentWidth(20);
@@ -108,27 +108,43 @@ public class stworzKontoLek {
         col4.setHalignment(HPos.RIGHT);
         col4.setHgrow(Priority.ALWAYS);
         col4.setFillWidth(true);
-        gridPane.getColumnConstraints().addAll(col3, col4);
+        gridPane.getColumnConstraints().addAll(col1, col2, col3, col4);
 
-        gridPane.add(noweImieLabel, 0, 0);
-        gridPane.add(noweNazwiskoLabel, 0, 1);
-        gridPane.add(NrPZW, 0, 2);
-        gridPane.add(nowyPeselLabel, 0, 3);
-        gridPane.add(nowyAdresLabel, 0, 4);
-        gridPane.add(nowyTelefonLabel, 0, 5);
-        gridPane.add(nowyEmailLabel, 0, 6);
-        gridPane.add(nowyWiekLabel, 0, 7);
-        gridPane.add(nowaPlecLabel, 0, 8);
+        gridPane.add(stareImieLabel, 0, 0);
+        gridPane.add(stareNazwiskoLabel, 0, 1);
+        gridPane.add(staryPeselLabel, 0, 2);
+        gridPane.add(staryAdresLabel, 0, 3);
+        gridPane.add(staryTelefonLabel, 0, 4);
+        gridPane.add(staryEmailLabel, 0, 5);
+        gridPane.add(staryWiekLabel, 0, 6);
+        gridPane.add(staraPlecLabel, 0, 7);
 
-        gridPane.add(imieField, 1, 0);
-        gridPane.add(nazwiskoField, 1, 1);
-        gridPane.add(PZWField, 1, 2);
-        gridPane.add(peselField, 1, 3);
-        gridPane.add(adresField, 1, 4);
-        gridPane.add(telefonField, 1, 5);
-        gridPane.add(emailField, 1, 6);
-        gridPane.add(wiekField, 1, 7);
-        gridPane.add(plecField, 1, 8);
+        gridPane.add(imie, 1, 0);
+        gridPane.add(nazwisko, 1, 1);
+        gridPane.add(PESEL, 1, 2);
+        gridPane.add(adres, 1, 3);
+        gridPane.add(telefon, 1, 4);
+        gridPane.add(email, 1, 5);
+        gridPane.add(wiek, 1, 6);
+        gridPane.add(plec, 1, 7);
+
+        gridPane.add(noweImieLabel, 2, 0);
+        gridPane.add(noweNazwiskoLabel, 2, 1);
+        gridPane.add(nowyPeselLabel, 2, 2);
+        gridPane.add(nowyAdresLabel, 2, 3);
+        gridPane.add(nowyTelefonLabel, 2, 4);
+        gridPane.add(nowyEmailLabel, 2, 5);
+        gridPane.add(nowyWiekLabel, 2, 6);
+        gridPane.add(nowaPlecLabel, 2, 7);
+
+        gridPane.add(imieField, 3, 0);
+        gridPane.add(nazwiskoField, 3, 1);
+        gridPane.add(peselField, 3, 2);
+        gridPane.add(adresField, 3, 3);
+        gridPane.add(telefonField, 3, 4);
+        gridPane.add(emailField, 3, 5);
+        gridPane.add(wiekField, 3, 6);
+        gridPane.add(plecField, 3, 7);
 
         HBox dolnyPanel = new HBox(600);
         dolnyPanel.setAlignment(Pos.CENTER);
@@ -161,7 +177,6 @@ public class stworzKontoLek {
         akceptuj.setOnAction(event -> {
             noweImie = imieField.getText();
             noweNazwisko = nazwiskoField.getText();
-            nowyPZW = PZWField.getText();
             nowyPesel = peselField.getText();
             nowyAdres = adresField.getText();
             nowyTelefon = telefonField.getText();
@@ -171,12 +186,12 @@ public class stworzKontoLek {
 
             ServerConnection serverConnection = new ServerConnection(PESELString, nazwiskoString);
             try {
-                serverConnection.getNowuLek("nowyLek", noweImie, noweNazwisko, nowyPZW
-                        ,nowyPesel, nowyAdres, nowyTelefon, nowyEmail, nowyWiek, nowaPlec);
+                serverConnection.getUpdateLek("updateWszystkoLek", PESELString, noweImie, noweNazwisko
+                ,nowyPesel, nowyAdres, nowyTelefon, nowyEmail, nowyWiek, nowaPlec);
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("UWAGA!");
                 alert.setHeaderText(null);
-                alert.setContentText("Poczekaj na sprawdzenie poprawności danych oraz licencji przez admina!");
+                alert.setContentText("Zmieniono dane!");
                 alert.showAndWait();
             } catch (IOException e) {
                 throw new RuntimeException(e);

@@ -3,10 +3,9 @@ package com.example.erecepta;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -34,9 +33,11 @@ public class stworzKontoPac {
     public TextField textPesel = new TextField();
     public DatePicker dateUrodzenia = new DatePicker();
     public TextField textAdres = new TextField();
-
     public TextField textTelefon = new TextField();
     public TextField textEmail = new TextField();
+
+    private Button buttonStworzKonto = new Button("Stwórz Konto");
+    public Button buttonWyloguj = new Button("Wyjdź");
 
     public void start(Stage primaryStage) {
 
@@ -54,7 +55,9 @@ public class stworzKontoPac {
         labelKontakt.setFont(Font.font("Manrope", 26));
 
         // ===== Grid dane osobowe =====
+        VBox VDaneOsobowe = new VBox();
         GridPane daneGrid = new GridPane();
+        VDaneOsobowe.getStyleClass().add("daneGrid");
         daneGrid.setHgap(30);
         daneGrid.setVgap(20);
 
@@ -73,8 +76,18 @@ public class stworzKontoPac {
         daneGrid.add(labelAdres, 0, 4, 2, 1);
         daneGrid.add(textAdres, 0, 5, 2, 1);
 
+        GridPane.setHgrow(textImie, Priority.ALWAYS);
+        GridPane.setHgrow(textNazwisko, Priority.ALWAYS);
+        dateUrodzenia.setMaxWidth(Double.MAX_VALUE);
+        GridPane.setHgrow(dateUrodzenia, Priority.ALWAYS);
+
+
         // ===== Grid kontakt =====
+        VBox Vkontakt = new VBox();
+        Vkontakt.getStyleClass().add("Vkontakt");
+        Vkontakt.setAlignment(Pos.TOP_CENTER);
         GridPane kontaktGrid = new GridPane();
+        kontaktGrid.setAlignment(Pos.CENTER);
         kontaktGrid.setHgap(30);
         kontaktGrid.setVgap(20);
 
@@ -84,6 +97,26 @@ public class stworzKontoPac {
         kontaktGrid.add(labelEmail, 1, 0);
         kontaktGrid.add(textEmail, 1, 1);
 
+
+        buttonStworzKonto.setMaxWidth(Double.MAX_VALUE);
+        buttonWyloguj.setMaxWidth(Double.MAX_VALUE);
+        kontaktGrid.add(buttonStworzKonto, 0, 2);
+        kontaktGrid.add(buttonWyloguj, 1, 2);
+        buttonWyloguj.getStyleClass().add("exit-btn");
+        buttonStworzKonto.setMaxWidth(Double.MAX_VALUE);
+        buttonWyloguj.setMaxWidth(Double.MAX_VALUE);
+
+        GridPane.setHgrow(textTelefon, Priority.ALWAYS);
+        GridPane.setHgrow(textEmail, Priority.ALWAYS);
+
+
+        VDaneOsobowe.getChildren().addAll(labelDane, daneGrid);
+
+        Vkontakt.getChildren().addAll(
+                labelKontakt,
+                kontaktGrid
+        );
+
         // ===== Root =====
         VBox root = new VBox(30);
         root.setPadding(new Insets(30));
@@ -91,20 +124,22 @@ public class stworzKontoPac {
 
         root.getChildren().addAll(
                 labelTitle,
-                labelDane,
-                daneGrid,
-                labelKontakt,
-                kontaktGrid
+                VDaneOsobowe, new Separator(),
+                Vkontakt
         );
 
         Scene scene = new Scene(root, 1300, 780); // jak w Twoim kodzie
 
-        // CSS jeśli masz
-        // scene.getStylesheets().add(getClass().getResource("/css/mainPanels/styleLek.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/css/tworzenieKont/noweKontoPac.css").toExternalForm());
 
         primaryStage.setTitle("E-Recepta");
         primaryStage.setScene(scene);
         primaryStage.show();
+
+        buttonWyloguj.setOnAction(e -> {
+            logika mainPanel = new logika();
+            mainPanel.start(primaryStage);
+        });
     }
 
     // gettery jak u Ciebie
@@ -130,5 +165,12 @@ public class stworzKontoPac {
 
     public String getEmail() {
         return textEmail.getText();
+    }
+    public Button getClearButton() {
+        return buttonStworzKonto;
+    }
+
+    public Button getSubmitButton() {
+        return buttonWyloguj;
     }
 }

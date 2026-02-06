@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class logika extends Application {
 
@@ -51,42 +52,99 @@ public class logika extends Application {
                 alert.setContentText("Hasło nie może być puste!");
                 alert.showAndWait();
             } else {
-                String login = logFX1.getLogin();
-                String password = logFX1.getPassword();
+                String password = logFX1.getLogin();
+                String PESEL = logFX1.getPassword();
                 int mode = logFX1.getChosenMode();
 
-                ServerConnection serverConnection = new ServerConnection(login, password);
+                ServerConnection serverConnection = new ServerConnection(PESEL, password);
+
 
                 switch (mode) {
                     case 1:
                         try {
-                            imie = serverConnection.getPacjent(getImie);
-                            nazwisko = serverConnection.getPacjent(getNazwisko);
-                            nazwaPacjenta = imie + nazwisko;
+                            String result = serverConnection.getPacjent("loginPacjent", PESEL);
+                            if ("BRAK_DANYCH".equals(result)) {
+                                new Alert(Alert.AlertType.WARNING, "Błędny login lub hasło").showAndWait();
+                                return;
+                            } else {
+                            imie = serverConnection.getPacjent("getImiePacjent", PESEL);
+                            nazwisko = serverConnection.getPacjent("getNazwiskoPacjent", PESEL);
+                            nazwaPacjenta = imie + " " + nazwisko;
                             mainPacPanel mainPanelPac = new mainPacPanel(imie, nazwisko, nazwaPacjenta);
                             mainPanelPac.start(primaryStage);
+                            }
                         } catch (IOException ex) {
                             new Alert(Alert.AlertType.WARNING, "Nie udało się pobrać danych pacjenta!").showAndWait();
                         }
                         break;
                     case 2:
                         try {
-                            imie = serverConnection.getPacjent(getImie);
-                            nazwisko = serverConnection.getPacjent(getNazwisko);
+                            imie = serverConnection.getPacjent("getImieLekarz", PESEL);
+                            nazwisko = serverConnection.getPacjent("getNazwiskoLekarz", PESEL);
+                            String IDLekarza = serverConnection.getPacjent("getIDLekarza", PESEL);
+                            String recepta  = serverConnection.getPacjent("getRecepta", IDLekarza);
+                            String historia = serverConnection.getPacjent("getHistoria", IDLekarza);
+                            String adres1 = serverConnection.getPacjent("getAdresLekarz", PESEL);
+                            String telefon1 = serverConnection.getPacjent("getTelefonLekarz", PESEL);
+                            String email1 = serverConnection.getPacjent("getEmailLekarz", PESEL);
+                            String wiek1 = serverConnection.getPacjent("getWiekLekarz", PESEL);
+                            String plec1 = serverConnection.getPacjent("getPlecLekarz", PESEL);
                             nazwaPacjenta = imie + nazwisko;
-                            mainLekPanel mainPanelLek = new mainLekPanel(imie, nazwisko, login, password);
+                            mainLekPanel mainPanelLek = new mainLekPanel(PESEL, password, imie, nazwisko);
                             mainPanelLek.start(primaryStage);
+
+                            mainPanelLek.getPomoc().setOnAction(e1 -> {
+                                        pomoc pomocPanel = new pomoc();
+                                        pomocPanel.start(primaryStage);
+
+                                        pomocPanel.getWyjdz().setOnAction(a -> {
+                                            mainPanelLek.start(primaryStage);
+                                        });
+                            });
+
+                            mainPanelLek.getUstawieniaLek().setOnAction(a->{
+                                ustawieniaLek ustawieniaLekarz = new ustawieniaLek(
+                                        imie,
+                                        nazwisko,
+                                        PESEL,
+                                        adres1,
+                                        telefon1,
+                                        email1,
+                                        wiek1,
+                                        plec1
+                                );
+                                ustawieniaLekarz.start(primaryStage);
+
+                                ustawieniaLekarz.getWyjdzBtn().setOnAction(actionEvent -> {
+                                    mainPanelLek.start(primaryStage);
+                                });
+                            });
+
+                            mainPanelLek.getMojeReceptaBtn().setOnAction(actionEvent -> {
+                               mojeRecepty mr = new mojeRecepty(recepta);
+                               mr.start(primaryStage);
+
+                               mr.getWyjdz().setOnAction(a -> {
+                                   mainPanelLek.start(primaryStage);
+                               });
+                            });
+
+                            mainPanelLek.getHistoryBtn().setOnAction(actionEvent -> {
+                                historiaPac hp = new historiaPac(historia);
+                                hp.start(primaryStage);
+
+                                hp.getWyjdz().setOnAction(a -> {
+                                    mainPanelLek.start(primaryStage);
+                                });
+                            });
+
+                            nowaRecepta.getWyjdzBtn().setOnAction(a1 -> {
+                                mainPanelLek.start(primaryStage);
+                            });
+
                         } catch (IOException ex) {
                             throw new RuntimeException(ex);
                         }
-                        break;
-                    case 3:
-                        stworzKontoPac stworzKontoPac = new stworzKontoPac();
-                        stworzKontoPac.start(primaryStage);
-                        break;
-                    case 4:
-                        stworzKontoLek stworzKontoLek = new stworzKontoLek();
-                        stworzKontoLek.start(primaryStage);
                         break;
                     default:
                         Alert alert = new Alert(Alert.AlertType.WARNING);

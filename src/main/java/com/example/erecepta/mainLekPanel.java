@@ -1,7 +1,6 @@
 package com.example.erecepta;
 
 import javafx.geometry.HPos;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -11,6 +10,8 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class mainLekPanel {
 
@@ -29,20 +30,21 @@ public class mainLekPanel {
 
     //Zmienne środkowego panelu
     private Label title = new Label("Wystawianie E-Recepty");
+    private Label karta = new Label("Karta Pacjenta");
     private Label imieINazwiskoLabel = new Label("Imię i nazwisko:");
-    private Label imieINazwiskoPacjenta = new Label("Piotr Bujak");
+    private Label imieINazwiskoPacjenta = new Label("");
     private Label plecLabel = new Label("Płeć:");
-    private Label plec = new Label("Mężczyzna");
+    private Label plec = new Label("");
     private Label wiekLabel = new Label("Wiek:");
-    private Label wiek = new Label("21");
+    private Label wiek = new Label("");
     private Label PESELLabel = new Label("PESEL:");
-    private Label PESELPacjenta = new Label("0123456789");
+    private Label PESELPacjenta = new Label("");
     private Label adresLabel = new Label("Adres:");
-    private Label adresPacjenta = new Label("ul. Kwaitowa 5, Warszawa");
+    private Label adresPacjenta = new Label("");
     private Label telefonLabel = new Label("Nr. Telefonu:");
-    private Label telefon = new Label("777 777 777");
+    private Label telefon = new Label("");
     private Label emailLabel = new Label("Adres e-mail:");
-    private Label email = new Label("piotr.bujak@student.pk.edu.pl");
+    private Label email = new Label("");
     private Label typReceptyLabel = new Label("Leki do recepty");
     private Button wczytajBtn = new Button("Wczytaj");
     private Button wypiszBtn = new Button("Wypisz Receptę");
@@ -52,11 +54,10 @@ public class mainLekPanel {
 
     //Zmienne prawej kolumny
     private Label alergieTitle = new Label("ALERGIE PACJENTA:");
-    private Label alergia1 = new Label("penicylina");
-    private Label alergia2 = new Label("orzechy");
-    private Label alergia3 = new Label("metylomeksatolina");
-    private Label historiaTitle = new Label("Historia Recept Pacjenta:");
+    private String alergia1;
+    private Label historiaTitle = new Label("Najbliższe E-wizyty:");
     private Button zobaczWszystko = new Button("Zobacz Wszystko");
+    private String historiaPacString;
 
     mainLekPanel(String login, String password, String imie, String nazwisko) {
         this.login = login;
@@ -79,7 +80,8 @@ public class mainLekPanel {
 
         nowaRecepta.setMaxWidth(Double.MAX_VALUE);
         historia.setMaxWidth(Double.MAX_VALUE);
-        mojeRecepty.setMaxWidth(Double.MAX_VALUE);;
+        mojeRecepty.setMaxWidth(Double.MAX_VALUE);
+        ;
         ustawienia.setMaxWidth(Double.MAX_VALUE);
         pomoc.setMaxWidth(Double.MAX_VALUE);
         wyloguj.setMaxWidth(Double.MAX_VALUE);
@@ -112,7 +114,7 @@ public class mainLekPanel {
            2.Wypisujące dane pacjęnta
            3.Wyszukujący dany lek i dodanie go do recepty
         */
-        VBox centerPanel = new VBox(20);
+        VBox centerPanel = new VBox(10);
 
         HBox titleBox = new HBox(10);
         titleBox.setAlignment(Pos.CENTER);
@@ -120,13 +122,22 @@ public class mainLekPanel {
                 title
         );
 
-        Label searchIcon = new Label("\uD83D\uDD0D"); // 🔍
-        searchIcon.getStyleClass().add("search-icon");
-        Label searchIcon2 = new Label("\uD83D\uDD0D"); // 🔍
-        searchIcon2.getStyleClass().add("search-icon2");
+        Image searchImage = new Image(
+                getClass().getResourceAsStream("/icons/search.png")
+        );
+
+        ImageView searchIcon = new ImageView(searchImage);
+        searchIcon.setFitWidth(20);
+        searchIcon.setFitHeight(20);
+        searchIcon.setPreserveRatio(true);
+
+        ImageView searchIcon2 = new ImageView(searchImage);
+        searchIcon2.setFitWidth(20);
+        searchIcon2.setFitHeight(20);
+        searchIcon2.setPreserveRatio(true);
 
         HBox searchBox1 = new HBox(8);
-        searchField.setPromptText("Wyszukaj Pacjenta (PESEL / Imię i Nazwisko)");
+        searchField.setPromptText("Wyszukaj Pacjenta (PESEL):");
         searchBox1.getChildren().addAll(searchIcon, searchField);
         searchBox1.getStyleClass().add("search-box");
         searchBox1.setAlignment(Pos.CENTER_LEFT);
@@ -143,34 +154,53 @@ public class mainLekPanel {
         );
 
         /* Dane pacjenta */
+        VBox titleMiddle = new VBox(10);
+        titleMiddle.setAlignment(Pos.CENTER);
+
         GridPane danePacjenta = new GridPane();
+        danePacjenta.setVgap(10);
         ColumnConstraints col1 = new ColumnConstraints();
         col1.setHalignment(HPos.RIGHT);
-        col1.setPercentWidth(25);
-        col1.setHalignment(HPos.RIGHT);
+        col1.setPercentWidth(15);
         ColumnConstraints col2 = new ColumnConstraints();
-        col2.setHgrow(Priority.ALWAYS);
-        col2.setFillWidth(true);
+        col2.setHalignment(HPos.LEFT);
+        col2.setPercentWidth(30);
+        ColumnConstraints col3 = new ColumnConstraints();
+        col3.setHalignment(HPos.RIGHT);
+        col3.setPercentWidth(15);
+        ColumnConstraints col4 = new ColumnConstraints();
+        col3.setHalignment(HPos.RIGHT);
+        col4.setHgrow(Priority.ALWAYS);
+        col4.setFillWidth(true);
 
         danePacjenta.getColumnConstraints().addAll(col1, col2);
-        danePacjenta.add(imieINazwiskoLabel, 0, 0);
-        danePacjenta.add(imieINazwiskoPacjenta, 1, 0);
         danePacjenta.add(PESELLabel, 0, 1);
         danePacjenta.add(PESELPacjenta, 1, 1);
-        danePacjenta.add(plecLabel, 0, 2);
-        danePacjenta.add(plec, 1, 2);
-        danePacjenta.add(wiekLabel, 0, 3);
-        danePacjenta.add(wiek, 1, 3);
-        danePacjenta.add(adresLabel, 0, 4);
-        danePacjenta.add(adresPacjenta, 1, 4);
-        danePacjenta.add(telefonLabel, 0, 5);
-        danePacjenta.add(telefon, 1, 5);
-        danePacjenta.add(emailLabel, 0, 6);
-        danePacjenta.add(email, 1, 6);
+        danePacjenta.add(plecLabel, 2, 1);
+        danePacjenta.add(plec, 3, 1);
+        danePacjenta.add(wiekLabel, 0, 2);
+        danePacjenta.add(wiek, 1, 2);
+        danePacjenta.add(adresLabel, 2, 2);
+        danePacjenta.add(adresPacjenta, 3, 2);
 
+        titleMiddle.getChildren().addAll(
+                karta,
+                imieINazwiskoPacjenta,
+                danePacjenta
+        );
+
+        /*
+            DODANIE LEKÓW DO NOWEJ RECEPTY
+            PO WYSZUKANIU PACJENTA MOŻNA SZYBKO DODAĆ PARĘ LEKÓW
+            LEKI SĄ ZAWSZE DO 1 OPAKOWANIA
+        */
+
+        //Środkowy panel wyszukiwanie leku
         HBox searchBox2 = new HBox(8);
         lekField.setPromptText("Wyszukaj lek...");
         searchBox2.getChildren().addAll(searchIcon2, lekField);
+        karta.getStyleClass().add("karta");
+        imieINazwiskoPacjenta.getStyleClass().add("imie-nazwisko");
         searchBox2.getStyleClass().add("search-box2");
         searchBox2.setAlignment(Pos.CENTER_LEFT);
 
@@ -178,21 +208,26 @@ public class mainLekPanel {
         lekField.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(searchBox2, Priority.ALWAYS);
 
-        HBox botoomBox = new HBox(10);
-        botoomBox.setAlignment(Pos.CENTER_LEFT);
-        botoomBox.getChildren().addAll(
+        VBox botBox = new VBox(10);
+        botBox.setAlignment(Pos.CENTER);
+        VBox.setVgrow(botBox, Priority.ALWAYS);
+
+        Region spacer1 = new Region();
+
+        HBox searchMed = new HBox(10);
+        searchMed.setAlignment(Pos.CENTER_LEFT);
+        searchMed.getChildren().addAll(
                 searchBox2,
                 dodajLekBtn
         );
 
-        centerPanel.getStyleClass().add("center-panel");
-        title.getStyleClass().add("center-title");
-        wczytajBtn.getStyleClass().add("blue-btn");
-        typReceptyLabel.getStyleClass().add("subtitle");
-        danePacjenta.getStyleClass().add("dane-pacjenta");
-        dodajLekBtn.getStyleClass().add("blue-btn");
-        searchField.getStyleClass().add("search-field");
-        lekField.getStyleClass().add("search-field2");
+        List<String> MedList = new ArrayList<>();
+        VBox nowyLek = new VBox(10);
+        ScrollPane lekiScrollPane = new ScrollPane(nowyLek);
+        lekiScrollPane.setFitToWidth(true);
+        lekiScrollPane.setPrefHeight(300);
+        lekiScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        lekiScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 
         HBox bottomBtn = new HBox();
         bottomBtn.setAlignment(Pos.CENTER);
@@ -200,28 +235,26 @@ public class mainLekPanel {
         bottomBtn.getChildren().addAll(wypiszBtn);
         wypiszBtn.getStyleClass().add("wypisz-recepte");
 
+        botBox.getChildren().addAll(
+                typReceptyLabel,
+                searchMed, new Separator(),
+                lekiScrollPane,
+                bottomBtn
+        );
+        botBox.getStyleClass().add("bottom-btn");
+
         centerPanel.getChildren().addAll(
                 titleBox,
                 topBox, new Separator(),
-                danePacjenta, new Separator(),
-                typReceptyLabel,
-                botoomBox, new Separator(),
-                bottomBtn
+                titleMiddle, new Separator(),
+                spacer1,
+                botBox
         );
 
 
         /*
            PRAWA KOLUMNA - INFORMACJE
         */
-        Label removeIcon1 = new Label("✕");
-        removeIcon1.getStyleClass().add("allergy-remove");
-
-        Label removeIcon2 = new Label("✕");
-        removeIcon2.getStyleClass().add("allergy-remove");
-
-        Label removeIcon3 = new Label("✕");
-        removeIcon3.getStyleClass().add("allergy-remove");
-
         Image warningImage = new Image(
                 getClass().getResourceAsStream("/icons/exclamation.png")
         );
@@ -239,32 +272,13 @@ public class mainLekPanel {
         titleBoxP.setAlignment(Pos.CENTER);
         titleBoxP.getChildren().addAll(warningIcon, allergyTitle);
 
-        HBox allergyChip1 = new HBox(10);
-        allergyChip1.getChildren().addAll(alergia1, removeIcon1);
-        allergyChip1.getStyleClass().add("allergy-chip1");
-        allergyChip1.setAlignment(Pos.CENTER);
-
-        HBox allergyChip2 = new HBox(10);
-        allergyChip2.getChildren().addAll(alergia2, removeIcon2);
-        allergyChip2.getStyleClass().add("allergy-chip2");
-        allergyChip2.setAlignment(Pos.CENTER);
-
-        HBox allergyChip3 = new HBox(10);
-        allergyChip3.getChildren().addAll(alergia3, removeIcon3);
-        allergyChip3.getStyleClass().add("allergy-chip3");
-        allergyChip3.setAlignment(Pos.CENTER);
-
         VBox allergyList = new VBox(12);
-        allergyList.getChildren().addAll(
-                allergyChip1,
-                allergyChip2,
-                allergyChip3
-        );
         allergyList.getStyleClass().add("allergy-container");
 
-        alergia1.getStyleClass().add("allergy-text1");
-        alergia2.getStyleClass().add("allergy-text2");
-        alergia3.getStyleClass().add("allergy-text3");
+        ScrollPane contentPane2 = new ScrollPane(allergyList);
+        contentPane2.setFitToWidth(true);
+        contentPane2.setMaxHeight(Double.MAX_VALUE);
+        contentPane2.getStyleClass().add("main-panel-content");
 
         VBox historyBox = new VBox(12);
         historyBox.setAlignment(Pos.CENTER);
@@ -273,11 +287,22 @@ public class mainLekPanel {
         zobaczWszystko.setMaxWidth(Double.MAX_VALUE);
         zobaczWszystko.getStyleClass().add("zobacz-wszystko");
 
+        VBox emptyPane = new VBox(new Label());
+        emptyPane.setAlignment(Pos.TOP_CENTER);
+
+        ScrollPane contentPane = new ScrollPane();
+        contentPane.setFitToWidth(true);
+        VBox.setVgrow(contentPane, Priority.ALWAYS);
+        contentPane.setMaxHeight(Double.MAX_VALUE);
+        contentPane.getStyleClass().add("main-panel-content");
+        contentPane.setContent(emptyPane);
+
         VBox rightPanel = new VBox(20);
         rightPanel.getChildren().addAll(
                 titleBoxP,
-                allergyList, new Separator(),
-                historyBox
+                contentPane2, new Separator(),
+                historyBox,
+                contentPane
         );
         rightPanel.getStyleClass().add("right-panel");
         alergieTitle.getStyleClass().add("subtitle");
@@ -294,6 +319,17 @@ public class mainLekPanel {
         /*
            SCENA
         */
+        titleMiddle.getStyleClass().add("title-middle");
+        centerPanel.getStyleClass().add("center-panel");
+        title.getStyleClass().add("center-title");
+        wczytajBtn.getStyleClass().add("blue-btn");
+        typReceptyLabel.getStyleClass().add("subtitle");
+        danePacjenta.getStyleClass().add("dane-pacjenta");
+        dodajLekBtn.getStyleClass().add("blue-btn");
+        searchField.getStyleClass().add("search-field");
+        lekField.getStyleClass().add("search-field2");
+        lekiScrollPane.getStyleClass().add("lek-scrollpane");
+
         Scene scene = new Scene(root, 1300, 780); //1300, 780
         scene.getStylesheets().add(
                 getClass().getResource("/css/mainPanels/styleLek.css").toExternalForm()
@@ -312,14 +348,89 @@ public class mainLekPanel {
 
         wczytajBtn.setOnAction(e -> {
             try {
-                String imie = serverConnection.getPacjent("getImie");
-                String nazwisko = serverConnection.getPacjent("getNazwisko");
+                String PESEL = searchField.getText();
+                String IDLekarza = serverConnection.getPacjent("getIDLekarza", login);
+                String e_wizyty = serverConnection.getPacjent("getWizyta", IDLekarza);
+                String imie1 = serverConnection.getPacjent("getImiePacjent", PESEL);
+                String nazwisko1 = serverConnection.getPacjent("getNazwiskoPacjent", PESEL);
+                String adres1 = serverConnection.getPacjent("getAdres", PESEL);
+                String telefon1 = serverConnection.getPacjent("getTelefon", PESEL);
+                String email1 = serverConnection.getPacjent("getEmail", PESEL);
+                String wiek1 = serverConnection.getPacjent("getWiek", PESEL);
+                String plec1 = serverConnection.getPacjent("getPlec", PESEL);
+                historiaPacString = serverConnection.getPacjent("getHistoriaPac", PESEL);
+                alergia1 = serverConnection.getPacjent("getAlergia", PESEL);
+
+                imieINazwiskoPacjenta.setText(imie1 + " " + nazwisko1);
+                PESELPacjenta.setText(PESEL);
+                adresPacjenta.setText(adres1);
+                plec.setText(plec1);
+                wiek.setText(wiek1);
+                telefon.setText(telefon1);
+                email.setText(email1);
+
+                System.out.println(alergia1);
+                String[] alergieTablica = alergia1.split("\\r?\\n");
+
+                for (int i = 0; i < alergieTablica.length; i++) {
+                    HBox allergyChip1 = new HBox(10);
+                    Label alergieLabel = new Label(alergieTablica[i]);
+                    allergyChip1.getChildren().addAll(alergieLabel);
+                    allergyChip1.getStyleClass().add("allergy-chip1");
+                    allergyChip1.setAlignment(Pos.CENTER);
+                    allergyList.getChildren().add(allergyChip1);
+                }
+
+                nowaRecepta.setOnAction(a -> {
+                    nowaRecepta Recepta = new nowaRecepta(imie1, nazwisko1, PESEL, login);
+                    Recepta.start(primaryStage);
+                });
+
+                zobaczWszystko.setOnAction(a -> {
+                    VBox historiaPane = new VBox(new Label(e_wizyty));
+                    System.out.print(e_wizyty);
+                    historiaPane.getStyleClass().add("historia");
+                    historiaPane.setAlignment(Pos.TOP_CENTER);
+
+                    contentPane.setContent(historiaPane);
+                });
+
+                dodajLekBtn.setOnAction(e1 -> {
+                    String tekst = lekField.getText();
+                    MedList.add(tekst);
+                    nowyLek.getChildren().add(new Label(MedList.size() + ". " + tekst + " (1 Op.)"));
+                    lekField.clear();
+                });
+
+                wypiszBtn.setOnAction(e2 -> {
+                    for (int i = 0; i < MedList.size(); i++) {
+                        try {
+                            serverConnection.getUpdateRec("updateWszystkoRec", PESEL, MedList.get(i), "1", "Nie", login);
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                    }
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("UWAGA!");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Dodano Lek!");
+                    alert.showAndWait();
+
+                    searchField.setText("");
+                });
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
-            imieINazwiskoPacjenta = new Label(imie + " " + nazwisko);
         });
-    }
 
-    public Button getPokazPac() { return wczytajBtn; }
+    }
+    public Button getHistoryBtn() {return historia;}
+
+    public Button getMojeReceptaBtn() { return mojeRecepty; }
+
+    public Button getUstawieniaLek() { return ustawienia; }
+
+    public Button getPomoc() { return pomoc; }
+
+    public Button getZobaczWszystko() { return zobaczWszystko; }
 }
